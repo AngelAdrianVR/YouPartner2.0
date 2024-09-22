@@ -22,3 +22,17 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+
+// Privacy and policy --------------------------
+// --------------------------------------------- 
+Route::get('/privacy-policy', function (){
+    return Inertia::render('PrivacyPolicy');
+})->name('privacy-policy');
+
+
+// Terms and conditions --------------------------
+// ----------------------------------------------
+Route::get('/terms-of-service', function (){
+    return Inertia::render('TermsOfService');
+})->name('terms-of-service');
