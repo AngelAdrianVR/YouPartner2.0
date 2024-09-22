@@ -9,8 +9,8 @@ const props = defineProps({
 
 const classes = computed(() => {
     return props.active
-        ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-        : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out';
+        ? 'w-full font-thin uppercase flex items-center p-4 my-1 transition-colors duration-200 justify-start text-indigo-500 bg-gradient-to-r from-white to-indigo-100 border-r-4 border-indigo-500 dark:from-gray-700 dark:to-gray-800'
+        : 'w-full font-thin uppercase text-gray-500 dark:text-gray-200 flex items-center p-4 my-1 transition-colors duration-200 justify-start hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-slate-600';
 });
 </script>
 
@@ -19,3 +19,4 @@ const classes = computed(() => {
         <slot />
     </Link>
 </template>
+

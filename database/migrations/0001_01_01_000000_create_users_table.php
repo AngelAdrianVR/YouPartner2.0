@@ -20,6 +20,17 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+
+            $table->string("academic_grade");
+            $table->string("school_name")->nullable();
+            $table->string("state");
+            $table->date("birthdate");
+            $table->boolean("active")->default(1);
+            $table->boolean("is_admin")->default(0);
+            $table->text("description")->nullable();
+
+            $table->foreignId('level_id')->default(1)->constrained();
+            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
         });
 
