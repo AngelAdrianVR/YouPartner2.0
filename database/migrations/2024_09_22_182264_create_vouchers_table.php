@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedFloat('amount');
+            $table->float('amount');
             $table->string('code');
             $table->timestamp('used_at');
             $table->text('notes');

@@ -30,7 +30,6 @@ return new class extends Migration
             $table->text("description")->nullable();
 
             $table->foreignId('level_id')->default(1)->constrained();
-            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
         });
 
