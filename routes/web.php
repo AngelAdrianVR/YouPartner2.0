@@ -40,14 +40,14 @@ Route::middleware([
 
 // Homeworks routes -----------------------------------------------------------
 // ---------------------------------------------------------------------------- 
-Route::resource('/homeworks', HomeworkController::class)->except('index', 'show');
-Route::get('/homeworks/no-collaboration', [HomeworkController::class, 'noCollaboration'])->name('homeworks.no-collaboration');
-Route::get('/homeworks/on-collaboration', [HomeworkController::class, 'onCollaboration'])->name('homeworks.on-collaboration');
-Route::get('/homeworks/completed', [HomeworkController::class, 'completed'])->name('homeworks.completed');
-Route::get('/homeworks/claims', [HomeworkController::class, 'claims'])->name('homeworks.claims');
-Route::post('/homeworks/send-message', [HomeworkController::class, 'sendMessage'])->name('homeworks.send-message');
-Route::post('/homeworks/delete-file', [HomeworkController::class, 'deleteFile'])->name('homeworks.delete-file');
-Route::post('/homeworks/update-with-resources/{homework}', [HomeworkController::class, 'updateWithResources'])->name('homeworks.update-with-resources');
+Route::resource('/homeworks', HomeworkController::class)->except('index', 'show')->middleware(['auth', 'verified']);
+Route::get('/homeworks/no-collaboration', [HomeworkController::class, 'noCollaboration'])->name('homeworks.no-collaboration')->middleware(['auth', 'verified']);
+Route::get('/homeworks/on-collaboration', [HomeworkController::class, 'onCollaboration'])->name('homeworks.on-collaboration')->middleware(['auth', 'verified']);
+Route::get('/homeworks/completed', [HomeworkController::class, 'completed'])->name('homeworks.completed')->middleware(['auth', 'verified']);
+Route::get('/homeworks/claims', [HomeworkController::class, 'claims'])->name('homeworks.claims')->middleware(['auth', 'verified']);
+Route::post('/homeworks/send-message', [HomeworkController::class, 'sendMessage'])->name('homeworks.send-message')->middleware(['auth', 'verified']);
+Route::post('/homeworks/delete-file', [HomeworkController::class, 'deleteFile'])->name('homeworks.delete-file')->middleware(['auth', 'verified']);
+Route::post('/homeworks/update-with-resources/{homework}', [HomeworkController::class, 'updateWithResources'])->name('homeworks.update-with-resources')->middleware(['auth', 'verified']);
 
 
 // Collaborations routes -----------------------------------------------------------

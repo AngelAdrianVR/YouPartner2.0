@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SchoolSubjectSeeder::class,
             PointsSeeder::class,
-            ConfigurationsSeeder::class,
+            // ConfigurationsSeeder::class,
         ]);
 
         User::factory(10)->create();
