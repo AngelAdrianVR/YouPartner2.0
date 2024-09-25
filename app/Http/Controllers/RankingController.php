@@ -7,59 +7,23 @@ use Illuminate\Http\Request;
 
 class RankingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function ranking(){
+
+        return inertia('Ranking/Ranking');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function awards(){
+
+        return inertia('Ranking/Awards');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function motivation(){
+
+        return inertia('Ranking/Motivation');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Ranking $ranking)
-    {
-        //
-    }
+    public function levels(){
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Ranking $ranking)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Ranking $ranking)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Ranking $ranking)
-    {
-        //
+        return inertia('Ranking/Levels');
     }
 }

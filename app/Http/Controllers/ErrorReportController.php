@@ -7,59 +7,30 @@ use Illuminate\Http\Request;
 
 class ErrorReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        return inertia('ErrorReport/Index');
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request) 
     {
-        //
-    }
+        $request->validate([
+            'subject' => 'required|max:50',
+            'content' => 'required',
+            'is_error' => 'required',
+        ]);
+        
+        $report = ErrorReport::create($request->validated() + ['user_id' => auth()->id()]);
+        $report->addAllMediaFromRequest()->each(fn ($file) => $file->toMediaCollection());
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return redirect()->route('error-reports.index')->with('message','Se ha enviado tu reporte. Muchas gracias por tu retroalimentación');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ErrorReport $errorReport)
+    
+    public function markAsRead(ErrorReport $error) 
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ErrorReport $errorReport)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ErrorReport $errorReport)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ErrorReport $errorReport)
-    {
-        //
+        $error->update(['is_read'  => 1]);
+        return redirect()->route('admin.errors')->with('message', 'Marcado como leido');
     }
 }

@@ -21,7 +21,7 @@ use Laravel\Fortify\Features;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return inertia('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -52,48 +52,48 @@ Route::post('/homeworks/update-with-resources/{homework}', [HomeworkController::
 
 // Collaborations routes -----------------------------------------------------------
 // ---------------------------------------------------------------------------------
-Route::resource('/collaborations', CollaborationController::class)->except('show');
-Route::get('/collaborations/approve-pendent', [CollaborationController::class, 'approvePendent'])->name('collaborations.approve-pendent');
-Route::get('/collaborations/in-process', [CollaborationController::class, 'inProcess'])->name('collaborations.in-process');
-Route::get('/collaborations/completed', [CollaborationController::class, 'completed'])->name('collaborations.completed');
-Route::get('/collaborations/claims', [CollaborationController::class, 'claims'])->name('collaborations.claims');
-Route::post('/collaborations/read-collaboration', [CollaborationController::class, 'readCollaboration'])->name('collaborations.read-collaboration');
-Route::post('/collaborations/update-p', [CollaborationController::class, 'updateP'])->name('collaborations.update-p');
-Route::put('/collaborations/approve/{collaboration}', [CollaborationController::class, 'approve'])->name('collaborations.approve');
-Route::put('/collaborations/release-payment/{collaboration}', [CollaborationController::class, 'releasePayment'])->name('collaborations.release-payment');
-Route::get('collaboration/{collaboration}/payment', [CollaborationController::class, 'payment'])->name('payment');
-Route::post('collaboration/payment-method-create', [CollaborationController::class, 'paymentMethodCreate'])->name('collaborations.payment-method.create');
-Route::post('collaboration/store-bank-data', [CollaborationController::class, 'storeBankData'])->name('collaborations.store-bank-data');
-Route::post('collaboration/payed', [CollaborationController::class, 'payed'])->name('collaborations.payed');
+Route::resource('/collaborations', CollaborationController::class)->except('show')->middleware(['auth', 'verified']);
+Route::get('/collaborations/approve-pendent', [CollaborationController::class, 'approvePendent'])->name('collaborations.approve-pendent')->middleware(['auth', 'verified']);
+Route::get('/collaborations/in-process', [CollaborationController::class, 'inProcess'])->name('collaborations.in-process')->middleware(['auth', 'verified']);
+Route::get('/collaborations/completed', [CollaborationController::class, 'completed'])->name('collaborations.completed')->middleware(['auth', 'verified']);
+Route::get('/collaborations/claims', [CollaborationController::class, 'claims'])->name('collaborations.claims')->middleware(['auth', 'verified']);
+Route::post('/collaborations/read-collaboration', [CollaborationController::class, 'readCollaboration'])->name('collaborations.read-collaboration')->middleware(['auth', 'verified']);
+Route::post('/collaborations/update-p', [CollaborationController::class, 'updateP'])->name('collaborations.update-p')->middleware(['auth', 'verified']);
+Route::put('/collaborations/approve/{collaboration}', [CollaborationController::class, 'approve'])->name('collaborations.approve')->middleware(['auth', 'verified']);
+Route::put('/collaborations/release-payment/{collaboration}', [CollaborationController::class, 'releasePayment'])->name('collaborations.release-payment')->middleware(['auth', 'verified']);
+Route::get('collaboration/{collaboration}/payment', [CollaborationController::class, 'payment'])->name('payment')->middleware(['auth', 'verified']);
+Route::post('collaboration/payment-method-create', [CollaborationController::class, 'paymentMethodCreate'])->name('collaborations.payment-method.create')->middleware(['auth', 'verified']);
+Route::post('collaboration/store-bank-data', [CollaborationController::class, 'storeBankData'])->name('collaborations.store-bank-data')->middleware(['auth', 'verified']);
+Route::post('collaboration/payed', [CollaborationController::class, 'payed'])->name('collaborations.payed')->middleware(['auth', 'verified']);
 
 
 // Ranking routes ------------------------------------------------------------------
 // ---------------------------------------------------------------------------------
-Route::get('/ranking', [RankingController::class,'ranking'])->name('ranking.index');
-Route::get('/ranking/awards', [RankingController::class,'awards'])->name('ranking.awards');
-Route::get('/ranking/motivation', [RankingController::class,'motivation'])->name('ranking.motivation');
-Route::get('/ranking/levels', [RankingController::class,'levels'])->name('ranking.levels');
+Route::get('/ranking', [RankingController::class,'ranking'])->name('ranking.index')->middleware(['auth', 'verified']);
+Route::get('/ranking/awards', [RankingController::class,'awards'])->name('ranking.awards')->middleware(['auth', 'verified']);
+Route::get('/ranking/motivation', [RankingController::class,'motivation'])->name('ranking.motivation')->middleware(['auth', 'verified']);
+Route::get('/ranking/levels', [RankingController::class,'levels'])->name('ranking.levels')->middleware(['auth', 'verified']);
 
 
 // Admin routes --------------------------------------------------------------------
 // ---------------------------------------------------------------------------------
-Route::get('/admin/finances', [AdminController::class,'finances'])->name('admin.finances');
-Route::get('/admin/configurations', [AdminController::class,'configurations'])->name('admin.configurations');
-Route::get('/admin/claims', [AdminController::class,'claims'])->name('admin.claims');
-Route::get('/admin/notifications', [AdminController::class,'notifications'])->name('admin.notifications');
-Route::get('/admin/users', [AdminController::class,'users'])->name('admin.users');
-Route::get('/admin/errors', [AdminController::class,'errors'])->name('admin.errors');
-Route::get('/admin/collaborations', [AdminController::class,'collaborations'])->name('admin.collaborations');
+Route::get('/admin/finances', [AdminController::class,'finances'])->name('admin.finances')->middleware(['auth', 'verified']);
+Route::get('/admin/configurations', [AdminController::class,'configurations'])->name('admin.configurations')->middleware(['auth', 'verified']);
+Route::get('/admin/claims', [AdminController::class,'claims'])->name('admin.claims')->middleware(['auth', 'verified']);
+Route::get('/admin/notifications', [AdminController::class,'notifications'])->name('admin.notifications')->middleware(['auth', 'verified']);
+Route::get('/admin/users', [AdminController::class,'users'])->name('admin.users')->middleware(['auth', 'verified']);
+Route::get('/admin/errors', [AdminController::class,'errors'])->name('admin.errors')->middleware(['auth', 'verified']);
+Route::get('/admin/collaborations', [AdminController::class,'collaborations'])->name('admin.collaborations')->middleware(['auth', 'verified']);
 
 
 // Claims routes -------------------------------------------------------------------
 // ---------------------------------------------------------------------------------
-Route::resource('/claims', ClaimController::class)->except('show');
+Route::resource('/claims', ClaimController::class)->except('show')->middleware(['auth', 'verified']);
 
 
 // Library routes -------------------------------------------------------------------
 // ----------------------------------------------------------------------------------
-Route::get('/library', [LibraryController::class,'index'])->name('library.index');
+Route::get('/library', [LibraryController::class,'index'])->name('library.index')->middleware(['auth', 'verified']);
 
 
 // Chat routes ----------------------------------------------------------------------
@@ -125,21 +125,21 @@ Route::post('notifications/{user}/mark-as-read', [NotificationController::class,
 Route::get('/profile/{user}', function ($user_id){
     $user = User::with('collaborations', 'homeworks')->find($user_id);
     // $user = new UserResource($user);
-    return Inertia::render('ProfileUser', ['user' => $user]);
+    return inertia('ProfileUser', ['user' => $user]);
 })->name('profile-view');
 
 
 // Privacy and policy --------------------------
 // --------------------------------------------- 
 Route::get('/privacy-policy', function (){
-    return Inertia::render('PrivacyPolicy');
+    return inertia('PrivacyPolicy');
 })->name('privacy-policy');
 
 
 // Terms and conditions --------------------------
 // ----------------------------------------------
 Route::get('/terms-of-service', function (){
-    return Inertia::render('TermsOfService');
+    return inertia('TermsOfService');
 })->name('terms-of-service');
 
 

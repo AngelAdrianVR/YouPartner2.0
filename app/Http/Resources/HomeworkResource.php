@@ -19,7 +19,7 @@ class HomeworkResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'limit_date' => $this->limit_date->isoFormat('DD MMM, YYYY'),
+            'limit_date' => $this->limit_date?->isoFormat('DD MMM, YYYY'),
             'priority' => $this->priority,
             'user' =>  UserResource::make($this->whenLoaded('user')),
             'school_subject' => $this->whenLoaded('schoolSubject'),
