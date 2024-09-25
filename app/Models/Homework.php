@@ -20,8 +20,8 @@ class Homework extends Model implements HasMedia
         'school_subject_id'
     ];
 
-    protected $dates = [
-        'limit_date'
+    protected $casts = [
+        'limit_date' => 'date'
     ];
 
     // Relationships -------------------

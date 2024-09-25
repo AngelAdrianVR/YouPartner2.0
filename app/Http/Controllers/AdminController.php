@@ -2,64 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ClaimResource;
+use App\Http\Resources\CollaborationResource;
+use App\Http\Resources\ErrorReportResource;
+use App\Http\Resources\UserResource;
 use App\Models\Admin;
+use App\Models\Claim;
+use App\Models\Collaboration;
+use App\Models\ErrorReport;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function finances()
     {
-        //
+
+        return inertia('Admin/Finances');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function configurations()
     {
-        //
+
+        return inertia('Admin/Configurations');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function claims()
     {
-        //
+        $claims = ClaimResource::collection(Claim::with(['collaboration.homework' => ['chats' => ['users', 'messages.user'], 'schoolSubject', 'user']])->paginate());
+        return inertia('Admin/Claims', compact('claims'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Admin $admin)
+    public function notifications()
     {
-        //
+
+        return inertia('Admin/Notifications');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Admin $admin)
+    public function users()
     {
-        //
+
+        $users = User::with('level', 'collaborations')->paginate();
+
+        // return UserResource::collection($users);
+        return inertia('Admin/Users', [
+            'users' => UserResource::collection($users)
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Admin $admin)
+    public function errors(Request $request)
     {
-        //
+        $filters = $request->all('search');
+        $errors = ErrorReportResource::collection(ErrorReport::filter($filters)
+            ->with('user')
+            ->latest()
+            ->paginate());
+
+        // return $errors;
+        return inertia('Admin/Errors', compact('errors'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Admin $admin)
+    public function collaborations(Request $request)
     {
-        //
+        $collaborations = CollaborationResource::collection(Collaboration::doesntHave('claim')
+            ->with(['homework' => ['schoolSubject', 'user'], 'user'])
+            ->paginate());
+        return inertia('Admin/Collaborations', compact('collaborations'));
     }
 }

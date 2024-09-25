@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreHomeworkRequest;
 use App\Http\Resources\HomeworkResource;
 use App\Http\Requests\UpdateHomeworkRequest;
+use App\Http\Resources\MessageResource;
 use App\Models\Homework;
+use App\Models\Message;
 use App\Models\SchoolSubject;
 use Illuminate\Http\Request;
 
@@ -31,9 +33,18 @@ class HomeworkController extends Controller
         return inertia('Homework/Create', compact('subjects'));
     }
 
-    public function store(StoreHomeworkRequest $request)
-    {
-        $homework = Homework::create($request->validated());
+    public function store(Request $request)
+    {   
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'limit_date' => 'required|after:yesterday',
+            'priority' => 'required',
+            'user_id' => 'required',
+            'school_subject_id' => 'required'
+        ]);
+
+        $homework = Homework::create($request->all());
         $homework->addAllMediaFromRequest()->each(fn ($file) => $file->toMediaCollection());
 
         // request()->session()->flash('flash.banner', 'Se ha creado la tarea correctamente!');
@@ -53,6 +64,14 @@ class HomeworkController extends Controller
     public function update(UpdateHomeworkRequest $request, Homework $homework)
     {
         $homework->update($request->validated());
+
+        return redirect()->route('homeworks.no-collaboration')->with('message', 'Se ha actualizado la tarea correctamente!');
+    }
+
+    public function updateWithResources(UpdateHomeworkRequest $request, Homework $homework)
+    {
+        $homework->update($request->validated());
+        $homework->addAllMediaFromRequest()->each(fn ($file) => $file->toMediaCollection());
 
         return redirect()->route('homeworks.no-collaboration')->with('message', 'Se ha actualizado la tarea correctamente!');
     }
@@ -129,5 +148,19 @@ class HomeworkController extends Controller
         // return $homeworks;
 
         return inertia('Homework/Claims', compact('homeworks', 'filters'));
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $message = Message::create($request->all());
+
+        return new MessageResource(Message::with('user')->find($message->id));
+    }
+
+    public function deleteFile(Request $request)
+    {
+        Homework::find($request->homework_id)->deleteMedia($request->file_id);
+
+        return response()->json(['success' => 'success'], 200);
     }
 }
